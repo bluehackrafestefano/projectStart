@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  frontend:
+    image: rafeclarusway/frontend:1.0.0
+    # build:
+    #   context: ./frontend
+    ports:
+      - '80:5173'
+    restart: on-failure
+    depends_on:
+      - backend
+
+  backend:
+    # image: rafeclarusway/backend:0.0.1
+    build:
+      context: ./backend
+    ports:
+      - '8000:8000'
+    restart: on-failure
+    volumes:
+      - ./backend/logs:/backend/logs
+      - ./backend/upload:/backend/upload
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: 'mongo'
+    ports:
+      - '27017:27017'
+    restart: on-failure
